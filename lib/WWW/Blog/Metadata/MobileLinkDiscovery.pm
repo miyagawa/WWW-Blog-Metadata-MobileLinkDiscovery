@@ -2,7 +2,7 @@ package WWW::Blog::Metadata::MobileLinkDiscovery;
 
 use strict;
 use vars qw($VERSION);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 use WWW::Blog::Metadata;
 use URI;
@@ -12,7 +12,7 @@ WWW::Blog::Metadata->mk_accessors(qw( mobile_link mobile_link_type ));
 sub on_got_tag {
     my $class = shift;
     my($meta, $tag, $attr, $base_uri) = @_;
-    if ($tag eq 'link' && $attr->{rel} eq 'alternate' && $attr->{media} =~ /handheld/) {
+    if ($tag eq 'link' && $attr->{rel} && lc($attr->{rel}) eq 'alternate' && $attr->{media} =~ /handheld/) {
         my %media = map { s/[^a-zA-Z0-9\-].*$//; ($_ => 1) }
             split /,\s*/, $attr->{media};
         if ($media{handheld}) {
